@@ -6,8 +6,8 @@ from langchain.schema.runnable import RunnablePassthrough
 from langchain.vectorstores.base import VectorStore
 
 from profai.prompts import (
-    ANSWER_WITH_CONTEXT_TEMPLATE,
-    ANSWER_WITH_TRANSCRIPT_AND_SLIDES_TEMPLATE,
+    create_answer_with_context_prompt,
+    create_answer_with_transcript_and_slides_prompt,
 )
 
 
@@ -24,23 +24,26 @@ def _combine_documents(docs, document_separator="\n\n"):
     return document_separator.join(doc_strings)
 
 
-def get_simple_chain(vectorstore: VectorStore):
+def create_simple_chain(vectorstore: VectorStore):
     retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
+    PROMPT = create_answer_with_context_prompt()
 
     context = {
         "context": itemgetter("question") | retriever | _combine_documents,
         "question": itemgetter("question"),
     }
 
-    chain = context | ANSWER_WITH_CONTEXT_TEMPLATE | ChatOpenAI() | StrOutputParser()
+    chain = context | PROMPT | ChatOpenAI() | StrOutputParser()
     return chain
 
 
-def get_transcript_slides_chain(
+def create_transcript_slides_chain(
     transcript_vectorstore: VectorStore, slides_vectorstore: VectorStore
 ):
     transcript_retriever = transcript_vectorstore.as_retriever(search_kwargs={"k": 5})
     slides_retriever = slides_vectorstore.as_retriever(search_kwargs={"k": 5})
+
+    PROMPT = create_answer_with_transcript_and_slides_prompt()
 
     docs = {
         "transcript_docs": itemgetter("question") | transcript_retriever,
@@ -57,9 +60,7 @@ def get_transcript_slides_chain(
     }
 
     answer = {
-        "answer": ANSWER_WITH_TRANSCRIPT_AND_SLIDES_TEMPLATE
-        | ChatOpenAI()
-        | StrOutputParser(),
+        "answer": PROMPT | ChatOpenAI() | StrOutputParser(),
         "transcript_docs": itemgetter("transcript_docs"),
         "slides_docs": itemgetter("slides_docs"),
     }

@@ -1,15 +1,15 @@
-def get_chunk(texts, metadata):
+def get_chunks(texts, metadata, chunk_size=10):
     n = len(texts)
     chunks = []
     chunked_metadata = []
-    for i in range(0, n - 10, 10):
-        chunk_captions = texts[i : i + 10]
+    for i in range(0, n - chunk_size, chunk_size):
+        chunk_captions = texts[i : i + chunk_size]
         chunks.append(" ".join(chunk_captions))
 
         chunked_metadata.append(
             {
                 "start_time": metadata[i]["start_time"],
-                "end_time": metadata[i + 9]["end_time"],
+                "end_time": metadata[i + chunk_size - 1]["end_time"],
                 "doc_name": metadata[i]["doc_name"],
             }
         )
