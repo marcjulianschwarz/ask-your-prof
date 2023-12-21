@@ -17,7 +17,7 @@ def load_prompt(name: str):
 
 def create_answer_with_context_prompt():
     if "context" in conf:
-        return ChatPromptTemplate.from_template(load_prompt(conf["context"]))
+        return ChatPromptTemplate.from_template(load_prompt(conf["german"]))
     else:
         raise ValueError("No context prompt found in conf.json")
 

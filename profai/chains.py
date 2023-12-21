@@ -24,16 +24,41 @@ def _combine_documents(docs, document_separator="\n\n"):
     return document_separator.join(doc_strings)
 
 
+# def create_simple_chain(vectorstore: VectorStore):
+#     retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
+#     PROMPT = create_answer_with_context_prompt()
+
+#     context = {
+#         "context": itemgetter("question") | retriever | _combine_documents,
+#         "question": itemgetter("question"),
+#     }
+
+#     chain = context | PROMPT | ChatOpenAI() | StrOutputParser()
+#     return chain
+
+
 def create_simple_chain(vectorstore: VectorStore):
     retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
+
     PROMPT = create_answer_with_context_prompt()
 
-    context = {
-        "context": itemgetter("question") | retriever | _combine_documents,
+    docs = {
+        "docs": itemgetter("question") | retriever,
         "question": itemgetter("question"),
     }
 
-    chain = context | PROMPT | ChatOpenAI() | StrOutputParser()
+    context = {
+        "context": lambda x: _combine_documents_transcript(x["docs"]),
+        "docs": itemgetter("docs"),
+        "question": itemgetter("question"),
+    }
+
+    answer = {
+        "answer": PROMPT | ChatOpenAI() | StrOutputParser(),
+        "docs": itemgetter("docs"),
+    }
+
+    chain = RunnablePassthrough() | docs | context | answer
     return chain
 
 
