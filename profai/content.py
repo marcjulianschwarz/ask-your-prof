@@ -28,7 +28,8 @@ class TextContent:
         if self.content_type == TextContentType.VTT:
             return get_transcript_chunks(self.texts, self.metadata)
         elif self.content_type == TextContentType.MARKDOWN:
-            return naive_text_chunk(self.texts)
+            chunks = naive_text_chunk(self.texts[0])
+            return chunks, [self.metadata[0] for _ in range(len(chunks))]
         else:
             raise ValueError("Unknown content type.")
 

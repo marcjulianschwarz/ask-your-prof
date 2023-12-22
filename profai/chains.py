@@ -4,8 +4,7 @@ from typing import List
 from langchain.chat_models import ChatOpenAI
 from langchain.schema.output_parser import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
-from langchain.vectorstores.base import VectorStore, VectorStoreRetriever
-from profai.content import TextContent
+from profai.content import TextContent, TextContentType
 
 from profai.prompts import (
     GENERAL_CONTEXT_PROMPT,
@@ -24,6 +23,14 @@ def _combine_documents(docs, document_separator="\n\n"):
     doc_strings = [f"Content: {doc.page_content}" for doc in docs]
     return document_separator.join(doc_strings)
 
+def get_doc_combiner(content: TextContent):
+    if content.content_type == TextContentType.VTT:
+        return _combine_documents_transcript
+    elif content.content_type == TextContentType.MARKDOWN:
+        return _combine_documents
+    else:
+        raise ValueError("Unknown content type.")
+
 
 def create_chain(contents: List[TextContent]):
     
@@ -37,7 +44,7 @@ def create_chain(contents: List[TextContent]):
     docs["question"] = itemgetter("question")
 
     contexts = {
-        content.name: lambda x: _combine_documents_transcript(x[content.name + "_doc"]) for content in contents
+        content.name: lambda x: get_doc_combiner(content)(x[content.name + "_doc"]) for content in contents
     }
     contexts["question"] = itemgetter("question")
     for content in contents:
@@ -55,60 +62,3 @@ def create_chain(contents: List[TextContent]):
     chain = RunnablePassthrough() | docs | contexts | answer
     return chain
 
-
-# def create_simple_chain(vectorstore: VectorStore):
-#     retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
-
-#     PROMPT = create_answer_with_context_prompt()
-
-#     docs = {
-#         "docs": itemgetter("question") | retriever,
-#         "question": itemgetter("question"),
-#     }
-
-#     context = {
-#         "context": lambda x: _combine_documents_transcript(x["docs"]),
-#         "docs": itemgetter("docs"),
-#         "question": itemgetter("question"),
-#     }
-
-#     answer = {
-#         "answer": PROMPT | ChatOpenAI() | StrOutputParser(),
-#         "docs": itemgetter("docs"),
-#     }
-
-#     chain = RunnablePassthrough() | docs | context | answer
-#     return chain
-
-
-# def create_transcript_slides_chain(
-#     transcript_vectorstore: VectorStore, slides_vectorstore: VectorStore
-# ):
-#     transcript_retriever = transcript_vectorstore.as_retriever(search_kwargs={"k": 5})
-#     slides_retriever = slides_vectorstore.as_retriever(search_kwargs={"k": 5})
-
-#     PROMPT = create_answer_with_transcript_and_slides_prompt()
-
-#     docs = {
-#         "transcript_docs": itemgetter("question") | transcript_retriever,
-#         "slides_docs": itemgetter("question") | slides_retriever,
-#         "question": itemgetter("question"),
-#     }
-
-#     context = {
-#         "transcript": lambda x: _combine_documents_transcript(x["transcript_docs"]),
-#         "slides": lambda x: _combine_documents(x["slides_docs"]),
-#         "transcript_docs": itemgetter("transcript_docs"),
-#         "slides_docs": itemgetter("slides_docs"),
-#         "question": itemgetter("question"),
-#     }
-
-#     answer = {
-#         "answer": PROMPT | ChatOpenAI() | StrOutputParser(),
-#         "transcript_docs": itemgetter("transcript_docs"),
-#         "slides_docs": itemgetter("slides_docs"),
-#     }
-
-#     chain = RunnablePassthrough() | docs | context | answer
-
-#     return chain
