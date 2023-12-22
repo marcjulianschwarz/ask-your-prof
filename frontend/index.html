@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Your Prof</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+      function askQuestion() {
+    var question = document.getElementById("chat").value;
+    fetch(`http://127.0.0.1:5000/ask?question=${question}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            var answer = data["answer"];
+            var answerDiv = document.createElement("div");
+            answerDiv.innerHTML = "<p>" + answer + "</p>";
+            document.body.appendChild(answerDiv);
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+
+    // clear input field
+    document.getElementById("chat").value = "";
+}
+
+    </script>
+</head>
+<body>
+    <div class="container">
+    <h1>Ask Your Prof</h1>
+    <form>
+        <input id="chat" type="text" name="question" placeholder="Ask your question here">
+        <button type="button" id="ask" onclick="askQuestion()">Add</button>
+    </form>
+</div>
+</body>
+</html>

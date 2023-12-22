@@ -56,7 +56,7 @@ def create_chain(contents: List[TextContent]):
 
     for content in contents:
         answer[content.name] = itemgetter(content.name)
-        answer[content.name + "_doc"] = itemgetter(content.name + "_doc")
+        #answer[content.name + "_doc"] = itemgetter(content.name + "_doc")
 
     
     chain = RunnablePassthrough() | docs | contexts | answer
