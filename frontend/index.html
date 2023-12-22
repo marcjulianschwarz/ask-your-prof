@@ -7,7 +7,15 @@
     <link rel="stylesheet" href="style.css">
     <script>
       function askQuestion() {
-    var question = document.getElementById("chat").value;
+    
+    
+        var chatHistory = document.getElementById("chat-history");
+
+        var question = document.getElementById("chat").value;
+        var questionDiv = document.createElement("div");
+        questionDiv.innerHTML = "<p class='user-chat'>" + question + "</p>";
+        chatHistory.appendChild(questionDiv);
+
     fetch(`http://127.0.0.1:5000/ask?question=${question}`)
         .then(response => {
             if (!response.ok) {
@@ -17,15 +25,19 @@
         })
         .then(data => {
             var answer = data["answer"];
+            console.log(data);
             var answerDiv = document.createElement("div");
-            answerDiv.innerHTML = "<p>" + answer + "</p>";
-            document.body.appendChild(answerDiv);
+            answerDiv.innerHTML = "<p class='ai-chat'>" + answer + "</p>";
+            chatHistory.appendChild(answerDiv);
+
+            var docIdsDiv = document.createElement("div");
+            docIdsDiv.innerHTML = "<p>" + data["doc_ids"] + "</p>";
+            chatHistory.appendChild(docIdsDiv);
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
 
-    // clear input field
     document.getElementById("chat").value = "";
 }
 
@@ -36,8 +48,12 @@
     <h1>Ask Your Prof</h1>
     <form>
         <input id="chat" type="text" name="question" placeholder="Ask your question here">
-        <button type="button" id="ask" onclick="askQuestion()">Add</button>
+        <button type="button" id="ask" onclick="askQuestion()">Ask</button>
     </form>
+    <div id="chat-history">
+        <p class="user-chat">What is a neural network?</p>
+        <p class="ai-chat">A neural network is a type of mathematical method that is part of the vision of artificial intelligence.</p>
+    </div>
 </div>
 </body>
 </html>

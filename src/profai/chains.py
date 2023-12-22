@@ -7,7 +7,7 @@ from langchain.schema.runnable import RunnablePassthrough
 from profai.content import TextContent, TextContentType
 
 from profai.prompts import (
-    GENERAL_CONTEXT_PROMPT,
+    GENERAL_CONTEXT_PROMPT, GENERAL_CONTEXT_PROMPT_DE
 )
 
 
@@ -34,7 +34,7 @@ def get_doc_combiner(content: TextContent):
 
 def create_chain(contents: List[TextContent]):
     
-    PROMPT = GENERAL_CONTEXT_PROMPT
+    PROMPT = GENERAL_CONTEXT_PROMPT_DE
     answer_chain = PROMPT.prompt | ChatOpenAI() | StrOutputParser()
 
 
@@ -56,7 +56,7 @@ def create_chain(contents: List[TextContent]):
 
     for content in contents:
         answer[content.name] = itemgetter(content.name)
-        #answer[content.name + "_doc"] = itemgetter(content.name + "_doc")
+        answer[content.name + "_doc"] = itemgetter(content.name + "_doc")
 
     
     chain = RunnablePassthrough() | docs | contexts | answer
