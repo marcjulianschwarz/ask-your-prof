@@ -13,7 +13,6 @@ class Prof:
         vectorstore_path: str | Path,
         session_name: str,
         system_prompt: Prompt = GENERAL_CONTEXT_PROMPT,
-        
     ):
         self.video_path = Path(video_path)
         self.transcript_path = Path(transcript_path)
@@ -26,7 +25,6 @@ class Prof:
     def add_content(self, content: TextContent):
         self.known_contents.append(content)
 
-
     def ask(self, question: str):
         if self.chain:
             return self.chain.invoke({"question": question})
@@ -34,7 +32,3 @@ class Prof:
             raise ValueError(
                 "The profs mode has not been set yet. Try transcript_mode or transcript_slides_mode."
             )
-
-
-
-   

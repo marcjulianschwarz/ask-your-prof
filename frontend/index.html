@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ask Your Prof</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script>
       function askQuestion() {
-    
-    
         var chatHistory = document.getElementById("chat-history");
 
         var question = document.getElementById("chat").value;
@@ -16,14 +14,14 @@
         questionDiv.innerHTML = "<p class='user-chat'>" + question + "</p>";
         chatHistory.appendChild(questionDiv);
 
-    fetch(`http://127.0.0.1:5000/ask?question=${question}`)
-        .then(response => {
+        fetch(`http://127.0.0.1:5000/ask?question=${question}`)
+          .then((response) => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+              throw new Error("Network response was not ok");
             }
             return response.json();
-        })
-        .then(data => {
+          })
+          .then((data) => {
             var answer = data["answer"];
             console.log(data);
             var answerDiv = document.createElement("div");
@@ -33,27 +31,34 @@
             var docIdsDiv = document.createElement("div");
             docIdsDiv.innerHTML = "<p>" + data["doc_ids"] + "</p>";
             chatHistory.appendChild(docIdsDiv);
-        })
-        .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
-        });
+          })
+          .catch((error) => {
+            console.error(
+              "There has been a problem with your fetch operation:",
+              error
+            );
+          });
 
-    document.getElementById("chat").value = "";
-}
-
+        document.getElementById("chat").value = "";
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-    <h1>Ask Your Prof</h1>
-    <form>
-        <input id="chat" type="text" name="question" placeholder="Ask your question here">
+      <h1>Ask Your Prof</h1>
+      <form>
+        <input
+          id="chat"
+          type="text"
+          name="question"
+          placeholder="Ask your question here"
+        />
         <button type="button" id="ask" onclick="askQuestion()">Ask</button>
-    </form>
-    <div id="chat-history">
-        <p class="user-chat">What is a neural network?</p>
-        <p class="ai-chat">A neural network is a type of mathematical method that is part of the vision of artificial intelligence.</p>
+      </form>
+      <div id="chat-history">
+        <!-- <p class="user-chat">What is a neural network?</p>
+        <p class="ai-chat">A neural network is a type of mathematical method that is part of the vision of artificial intelligence.</p> -->
+      </div>
     </div>
-</div>
-</body>
+  </body>
 </html>
