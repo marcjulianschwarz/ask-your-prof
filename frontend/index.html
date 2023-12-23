@@ -5,43 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ask Your Prof</title>
     <link rel="stylesheet" href="style.css" />
-    <script>
-      function askQuestion() {
-        var chatHistory = document.getElementById("chat-history");
-
-        var question = document.getElementById("chat").value;
-        var questionDiv = document.createElement("div");
-        questionDiv.innerHTML = "<p class='user-chat'>" + question + "</p>";
-        chatHistory.appendChild(questionDiv);
-
-        fetch(`http://127.0.0.1:5000/ask?question=${question}`)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            var answer = data["answer"];
-            console.log(data);
-            var answerDiv = document.createElement("div");
-            answerDiv.innerHTML = "<p class='ai-chat'>" + answer + "</p>";
-            chatHistory.appendChild(answerDiv);
-
-            var docIdsDiv = document.createElement("div");
-            docIdsDiv.innerHTML = "<p>" + data["doc_ids"] + "</p>";
-            chatHistory.appendChild(docIdsDiv);
-          })
-          .catch((error) => {
-            console.error(
-              "There has been a problem with your fetch operation:",
-              error
-            );
-          });
-
-        document.getElementById("chat").value = "";
-      }
-    </script>
+    <script src="main.js"></script>
   </head>
   <body>
     <div class="container">
