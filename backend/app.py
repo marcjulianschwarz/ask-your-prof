@@ -13,7 +13,8 @@ tc = VTTContent.from_path(Path("/Volumes/WD/Mac/Code/Data/georg/transcripts"), "
 chain = create_chain([tc])
 
 app = Flask(__name__)
-CORS(app, resources={r"/ask": {"origins": "http://localhost:1234"}})
+# CORS(app, resources={r"/ask": {"origins": "http://localhost:1234"}})
+CORS(app, resources={r"/ask": {"origins": "http://localhost:5173"}})
 
 
 @app.route("/ask", methods=["GET"])
@@ -26,7 +27,13 @@ def ask():
     )
     res = {
         "answer": res["answer"],
-        "doc_ids": [doc.metadata["doc_name"] for doc in res["trans_doc"]],
+        "docs": [
+            {
+                "content": doc.page_content,
+                "id": doc.metadata["doc_name"],
+            }
+            for doc in res["trans_doc"]
+        ],
     }
 
     return jsonify(res)
