@@ -2,27 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ask Your Prof</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="main.js"></script>
+    <title>Vite App</title>
   </head>
   <body>
-    <div class="container">
-      <h1>Ask Your Prof</h1>
-      <form>
-        <input
-          id="chat"
-          type="text"
-          name="question"
-          placeholder="Ask your question here"
-        />
-        <button type="button" id="ask" onclick="askQuestion()">Ask</button>
-      </form>
-      <div id="chat-history">
-        <!-- <p class="user-chat">What is a neural network?</p>
-        <p class="ai-chat">A neural network is a type of mathematical method that is part of the vision of artificial intelligence.</p> -->
-      </div>
-    </div>
+
+    <div id="app"></div>
+
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
