@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
 load_dotenv("/Users/marcjulianschwarz/Mac/Code/Envs/ask-your-prof/.env")
@@ -37,3 +37,11 @@ def ask():
     }
 
     return jsonify(res)
+
+
+@app.route("/video", methods=["GET"])
+def video():
+    doc_id = request.args.get("doc_id")
+    return send_from_directory(
+        "/Volumes/WD/Mac/Code/Data/georg/videos", doc_id + ".m4v"
+    )

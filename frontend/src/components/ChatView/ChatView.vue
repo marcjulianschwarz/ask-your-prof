@@ -9,7 +9,8 @@
       </form>
       <ChatHistory :messages="messages" />
     </div>
-    <DocListView :docs="docs" :key="answer" />
+    <!-- <DocListView :docs="docs" :key="answer" /> -->
+    <VideoView :videoPath="path" />
   </div>
 </template>
 
@@ -18,7 +19,9 @@ import { ref } from "vue";
 import { askQuestion, type TextDocument } from "@/api/ChatAPI";
 import ChatHistory from "./ChatHistory/ChatHistory.vue";
 import DocListView from "../DocListView/DocListView.vue";
+import VideoView from "../VideoView/VideoView.vue";
 
+const path = "http://127.0.0.1:5000/video?doc_id=20211011-2";
 const question = ref("");
 const answer = ref("");
 const messages = ref([
