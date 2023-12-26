@@ -2,9 +2,9 @@
   <div v-if="props.docs" class="doc-list-view">
     <h2>Current Documents</h2>
     <div class="controls">
-      <p class="btn" @click="previousDoc">Previous</p>
+      <Button @click="previousDoc">Previous</Button>
       <p class="idx">{{ diplayIndex }}</p>
-      <p class="btn" @click="nextDoc">Next</p>
+      <Button @click="nextDoc">Next</Button>
     </div>
     <DocView :doc="currentDoc" :key="currentDoc.content" />
   </div>
@@ -14,6 +14,7 @@
 import DocView from "../DocView/DocView.vue";
 import { computed, defineProps, ref } from "vue";
 import type { TextDocument } from "@/api/ChatAPI";
+import Button from "../Button/Button.vue";
 
 const props = defineProps<{ docs: TextDocument[] }>();
 const selectedIndex = ref(0);

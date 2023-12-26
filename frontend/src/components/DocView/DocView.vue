@@ -1,14 +1,15 @@
 <template>
   <div v-if="props.doc" class="doc">
     <p class="content">{{ docDisplay }}</p>
-    <p v-if="showAll" @click="showAll = false" class="show-more">Show less</p>
-    <p v-else="showAll" @click="showAll = true" class="show-more">Show more</p>
+    <Button v-if="showAll" @click="showAll = false">Show less</Button>
+    <Button v-else="showAll" @click="showAll = true">Show more</Button>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { TextDocument } from "@/api/ChatAPI";
 import { computed, defineProps, ref } from "vue";
+import Button from "../Button/Button.vue";
 
 const props = defineProps<{
   doc: TextDocument;

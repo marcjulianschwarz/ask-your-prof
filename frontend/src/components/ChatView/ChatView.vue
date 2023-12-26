@@ -5,13 +5,16 @@
       <p>This is your prof. Ask a question about his or her lecture.</p>
       <form @submit="say">
         <input type="text" v-model="question" placeholder="Ask a question" />
-        <button type="submit">Send</button>
+        <button class="ask-button" type="submit">Send</button>
       </form>
       <ChatHistory :messages="messages" />
     </div>
-    <!-- <DocListView :docs="docs" :key="answer" /> -->
-    <VideoView :videoPath="path" />
+    <DocListView :docs="docs" :key="answer" />
   </div>
+  <!-- <div class="video-container">
+    <VideoView :videoPath="path" />
+    <VideoView :videoPath="path" />
+  </div> -->
 </template>
 
 <script setup lang="ts">
@@ -20,6 +23,7 @@ import { askQuestion, type TextDocument } from "@/api/ChatAPI";
 import ChatHistory from "./ChatHistory/ChatHistory.vue";
 import DocListView from "../DocListView/DocListView.vue";
 import VideoView from "../VideoView/VideoView.vue";
+import Button from "../Button/Button.vue";
 
 const path = "http://127.0.0.1:5000/video?doc_id=20211011-2";
 const question = ref("");
@@ -42,7 +46,7 @@ const messages = ref([
   },
 ]);
 
-const docs = ref<TextDocument[]>([]);
+const docs = ref<TextDocument[]>();
 
 function say(event: Event) {
   event.preventDefault();

@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <video ref="videoRef" controls>
-      <source :src="videoPath" type="video/mp4" />
-      Your browser does not support the video.
-    </video>
-  </div>
+  <video class="video" ref="videoRef" controls>
+    <source :src="videoPath" type="video/mp4" />
+    Your browser does not support the video.
+  </video>
 </template>
 
 <script setup lang="ts">
@@ -25,7 +23,7 @@ onMounted(() => {
 
 <style scoped>
 .video {
-  width: 100%;
-  height: auto;
+  min-width: 300px;
+  max-width: 400px;
 }
 </style>
