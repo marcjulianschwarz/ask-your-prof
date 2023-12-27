@@ -1,11 +1,14 @@
 <template>
   <div v-if="props.docs.length > 0" class="doc-list-view">
-    <h2>Current Documents</h2>
-    <div class="controls">
-      <Button @click="previousDoc">Previous</Button>
-      <p class="idx">{{ diplayIndex }}</p>
-      <Button @click="nextDoc">Next</Button>
+    <div class="header">
+      <p class="doc-title">{{ currentDoc.id || "Lecture Video 11" }}</p>
+      <div class="controls">
+        <ArrowButton @click="previousDoc" direction="left" size="small" />
+        <p class="idx">{{ diplayIndex }} / {{ docs.length }}</p>
+        <ArrowButton @click="nextDoc" direction="right" size="small" />
+      </div>
     </div>
+
     <DocView :doc="currentDoc" :key="currentDoc.content" />
   </div>
 </template>
@@ -14,7 +17,7 @@
 import DocView from "../DocView/DocView.vue";
 import { computed, defineProps, ref } from "vue";
 import type { TextDocument } from "@/api/ChatAPI";
-import Button from "../Button/Button.vue";
+import ArrowButton from "../Button/ArrowButton.vue";
 
 const props = defineProps<{ docs: TextDocument[] }>();
 const selectedIndex = ref(0);
@@ -42,15 +45,49 @@ function previousDoc() {
 
 <style scoped>
 .doc-list-view {
-  max-width: 500px;
+  /* gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  width: 500px;
+  align-items: center; */
+  max-width: 600px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.doc-title {
+  font-weight: bold;
+  color: rgb(85, 85, 85);
 }
 
 .controls {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   align-items: center;
-  margin-bottom: 1rem;
   justify-content: flex-end;
+  user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.idx {
+  width: 40px;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .btn {

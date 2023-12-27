@@ -28,4 +28,9 @@ const docDisplay = computed(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.content {
+  text-align: justify;
+  margin-bottom: 15px;
+}
+</style>

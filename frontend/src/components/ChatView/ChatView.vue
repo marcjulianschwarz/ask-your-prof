@@ -54,7 +54,7 @@ function addMessage(event: Event) {
 .chat-container {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 100px;
   margin-top: 50px;
 }
 
@@ -62,7 +62,7 @@ function addMessage(event: Event) {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 900px;
+  max-width: 1000px;
 }
 
 .video-container {

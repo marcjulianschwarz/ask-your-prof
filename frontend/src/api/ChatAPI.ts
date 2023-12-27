@@ -1,6 +1,7 @@
 export interface TextDocument {
   id: string;
   content: string;
+  title?: string;
 }
 
 export interface ServerResponse {
