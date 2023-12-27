@@ -42,7 +42,7 @@ function addMessage(event: Event) {
 
   askQuestion(question.value).then((answerRes) => {
     answer.value = answerRes.answer;
-    messages.value.push(new BotChatMessage(1, "Here are some documents"));
+    messages.value.push(new BotChatMessage(1, answer.value));
     docs.value = answerRes.docs;
   });
 

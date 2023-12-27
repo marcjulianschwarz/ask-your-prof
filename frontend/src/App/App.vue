@@ -4,7 +4,7 @@ import ChatView from "@/components/ChatView/ChatView.vue";
 
 <template>
   <div class="container">
-    <h1>Ask your Prof</h1>
+    <h1>Ask Your Prof</h1>
     <ChatView />
   </div>
 </template>
