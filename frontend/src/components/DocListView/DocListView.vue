@@ -1,5 +1,5 @@
 <template>
-  <div v-if="props.docs" class="doc-list-view">
+  <div v-if="props.docs.length > 0" class="doc-list-view">
     <h2>Current Documents</h2>
     <div class="controls">
       <Button @click="previousDoc">Previous</Button>
@@ -40,4 +40,28 @@ function previousDoc() {
 }
 </script>
 
-<style scoped src="./DocListView.css"></style>
+<style scoped>
+.doc-list-view {
+  max-width: 500px;
+}
+
+.controls {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  justify-content: flex-end;
+}
+
+.btn {
+  color: #007bff;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* For Internet Explorer: */
+}
+</style>

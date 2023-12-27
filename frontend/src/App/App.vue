@@ -4,8 +4,14 @@ import ChatView from "@/components/ChatView/ChatView.vue";
 
 <template>
   <div class="container">
+    <h1>Ask your Prof</h1>
     <ChatView />
   </div>
 </template>
 
-<style scoped src="./App.css"></style>
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+}
+</style>

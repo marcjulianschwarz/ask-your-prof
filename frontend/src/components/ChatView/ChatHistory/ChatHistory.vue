@@ -3,25 +3,26 @@
     <Message
       v-for="message in messages"
       :key="message.id"
-      :message="message.text"
-      :type="message.type"
+      :message="message.message"
+      :icon="message.icon"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+import type { BotChatMessage, HumanChatMessage } from "@/api/ChatAPI";
 import Message from "./Message/Message.vue";
-import { defineProps } from "vue";
 
-interface ChatMessage {
-  id: number;
-  text: string;
-  type: string;
-}
-
-const props = defineProps<{
-  messages: ChatMessage[];
+defineProps<{
+  messages: (BotChatMessage | HumanChatMessage)[];
 }>();
 </script>
 
-<style scoped src="./ChatHistory.css"></style>
+<style scoped>
+.chat-history {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 30px;
+}
+</style>

@@ -1,23 +1,26 @@
 <template>
   <div class="message-container">
-    <p class="icon">{{ type }}</p>
+    <p class="icon">{{ icon }}</p>
     <p class="message">{{ message }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { withDefaults, defineProps } from "vue";
-
-const props = withDefaults(
-  defineProps<{
-    message: string;
-    type: string;
-  }>(),
-  {
-    message: "",
-    type: "",
-  }
-);
+defineProps<{
+  message: string;
+  icon: string;
+}>();
 </script>
 
-<style scoped src="./Message.css"></style>
+<style scoped>
+.message-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+</style>

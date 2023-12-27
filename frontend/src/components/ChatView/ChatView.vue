@@ -1,9 +1,8 @@
 <template>
-  <h1>Ask your Prof</h1>
   <div class="chat-container">
-    <div class="chat-view-container">
+    <div class="chat">
       <p>This is your prof. Ask a question about his or her lecture.</p>
-      <form @submit="say">
+      <form @submit="addMessage">
         <input type="text" v-model="question" placeholder="Ask a question" />
         <button class="ask-button" type="submit">Send</button>
       </form>
@@ -19,50 +18,31 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { askQuestion, type TextDocument } from "@/api/ChatAPI";
+import {
+  askQuestion,
+  BotChatMessage,
+  HumanChatMessage,
+  type TextDocument,
+} from "@/api/ChatAPI";
 import ChatHistory from "./ChatHistory/ChatHistory.vue";
 import DocListView from "../DocListView/DocListView.vue";
-import VideoView from "../VideoView/VideoView.vue";
 import Button from "../Button/Button.vue";
 
-const path = "http://127.0.0.1:5000/video?doc_id=20211011-2";
 const question = ref("");
 const answer = ref("");
-const messages = ref([
-  {
-    id: 1,
-    text: "Hello! I am an AI.",
-    type: "🤖",
-  },
-  {
-    id: 2,
-    text: "Hi I am a nice human that is awesome.",
-    type: "👨🏻‍💻",
-  },
-  {
-    id: 3,
-    text: "Moin.",
-    type: "🤖",
-  },
+const docs = ref<TextDocument[]>([]);
+const messages = ref<Array<BotChatMessage | HumanChatMessage>>([
+  new BotChatMessage(1, "Hello, I am your prof. Ask me a question."),
 ]);
 
-const docs = ref<TextDocument[]>();
-
-function say(event: Event) {
+function addMessage(event: Event) {
   event.preventDefault();
-  messages.value.push({
-    id: messages.value.length + 1,
-    text: question.value,
-    type: "👨🏻‍💻",
-  });
+
+  messages.value.push(new HumanChatMessage(1, question.value));
 
   askQuestion(question.value).then((answerRes) => {
     answer.value = answerRes.answer;
-    messages.value.push({
-      id: messages.value.length + 1,
-      text: answer.value,
-      type: "🤖",
-    });
+    messages.value.push(new BotChatMessage(1, "Here are some documents"));
     docs.value = answerRes.docs;
   });
 
@@ -70,4 +50,80 @@ function say(event: Event) {
 }
 </script>
 
-<style scoped src="./ChatView.css"></style>
+<style scoped>
+.chat-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 900px;
+}
+
+.video-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 900px;
+}
+
+input {
+  padding: 10px 20px 10px 20px;
+  width: 300px;
+  outline: none;
+  border-radius: 500px;
+  border-color: black;
+  border-style: solid;
+  background-color: #303030;
+  color: white;
+  font-size: 1rem;
+}
+form {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.ask-button {
+  outline: none;
+  border-radius: 500px;
+  border-color: black;
+  border-style: solid;
+  background-color: #303030;
+  padding: 10px 20px 10px 20px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+#chat-history {
+  margin-top: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+.ai-chat {
+  margin-left: 40px;
+}
+.doc-box {
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  border-radius: 10px;
+  padding: 10px 20px 10px 20px;
+  cursor: pointer;
+}
+.doc-box-content.hidden {
+  display: none;
+}
+.doc-box-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+</style>

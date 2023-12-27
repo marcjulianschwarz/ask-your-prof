@@ -28,4 +28,4 @@ const docDisplay = computed(() => {
 });
 </script>
 
-<style scoped src="./DocView.css"></style>
+<style scoped></style>
