@@ -10,21 +10,21 @@ from profai.prompts import GENERAL_CONTEXT_PROMPT, GENERAL_CONTEXT_PROMPT_DE
 
 
 def create_chain(contents: List[TextContent]):
-    PROMPT = GENERAL_CONTEXT_PROMPT
-
-    answer_chain = PROMPT.prompt | ChatOpenAI() | StrOutputParser()
+    answer_chain = itemgetter("prompt") | ChatOpenAI() | StrOutputParser()
 
     docs = {
         content.name + "_doc": itemgetter("question") | content.retriever()
         for content in contents
     }
     docs["question"] = itemgetter("question")
+    docs["prompt"] = itemgetter("prompt")
 
     contexts = {
         content.name: lambda x: content.combine_docs(x[content.name + "_doc"])
         for content in contents
     }
     contexts["question"] = itemgetter("question")
+    contexts["prompt"] = itemgetter("prompt")
 
     for content in contents:
         contexts[content.name + "_doc"] = itemgetter(content.name + "_doc")
@@ -38,5 +38,5 @@ def create_chain(contents: List[TextContent]):
         answer[content.name + "_doc"] = itemgetter(content.name + "_doc")
 
     chain = RunnablePassthrough() | docs | contexts | answer
-
+    print(chain)
     return chain
