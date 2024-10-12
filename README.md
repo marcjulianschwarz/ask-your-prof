@@ -1,6 +1,6 @@
 # Ask Your Prof
 
-> Active Development. Current version is **NOT** stable.
+> Active Development. The current version is **NOT** stable. It generally runs, but there are some issues with the OpenAI API, although that could also just be a misconfiguration of my API key, to be honest. This was a fun little side project of mine where I wanted to try out LangChain's new [LCEL](https://blog.langchain.dev/langchain-expression-language/). Also, it is more or less a generalization of a private RAG chatbot that I created to study for one of my university courses by running it on my professor's lectures and slides.
 
 Your personal AI professor having access to lecture recordings, slides and notes.
 
