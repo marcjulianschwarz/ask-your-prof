@@ -5,3 +5,5 @@ webvtt-py
 flask
 tiktoken
 faiss-cpu
+flask-cors
+langchain-community

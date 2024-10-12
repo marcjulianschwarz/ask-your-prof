@@ -10,6 +10,9 @@
     </div>
     <DocListView :docs="docs" :key="answer" />
   </div>
+  <p>
+    {{ prompt }}
+  </p>
   <!-- <div class="video-container">
     <VideoView :videoPath="path" />
     <VideoView :videoPath="path" />
@@ -35,12 +38,16 @@ const messages = ref<Array<BotChatMessage | HumanChatMessage>>([
   new BotChatMessage(1, "Hello, I am your prof. Ask me a question."),
 ]);
 
+const props = defineProps<{
+  prompt: string;
+}>();
+
 function addMessage(event: Event) {
   event.preventDefault();
 
   messages.value.push(new HumanChatMessage(1, question.value));
 
-  askQuestion(question.value).then((answerRes) => {
+  askQuestion(question.value, props.prompt).then((answerRes) => {
     answer.value = answerRes.answer;
     messages.value.push(new BotChatMessage(1, answer.value));
     docs.value = answerRes.docs;

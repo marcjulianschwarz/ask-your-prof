@@ -155,7 +155,9 @@ def create_vectorstore(
             f"The vectorstore {name} already exists. Change the name or delete it to generate a new one."
         )
         vectorstore = vectorstore.load_local(
-            VECTOR_STORE_PATH / name, embeddings=embedding
+            VECTOR_STORE_PATH / name,
+            embeddings=embedding,
+            allow_dangerous_deserialization=True,
         )
         return vectorstore
     elif chunks and metadata:
